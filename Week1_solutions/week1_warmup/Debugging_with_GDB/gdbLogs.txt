@@ -1,0 +1,53 @@
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Starting program: /home/purvi/OS_Submissions/Week1_solutions/week1_warmup/Debugging_with_GDB/a.out 
+1
+1
+2
+4
+8
+16
+32
+64
+128
+256
+512
+1024
+[Inferior 1 (process 16986) exited normally]
+(gdb) b 14
+Breakpoint 4 at 0x555555555229: file fibbonaci.cpp, line 14.
+(gdb) r
+Starting program: /home/purvi/OS_Submissions/Week1_solutions/week1_warmup/Debugging_with_GDB/a.out 
+1
+1
+
+Breakpoint 4, main (argc=1, argv=0x7fffffffdfd8) at fibbonaci.cpp:14
+14	    int next = second_last + last;
+(gdb) p {last, second_last}
+$3 = {1, 1}
+(gdb) c
+Continuing.
+2
+
+Breakpoint 4, main (argc=1, argv=0x7fffffffdfd8) at fibbonaci.cpp:14
+14	    int next = second_last + last;
+(gdb) p {last, second_last}
+$4 = {2, 2}
+(gdb) l 15
+10	
+11	  cout << second_last << endl << last << endl;
+12	
+13	  for(int i=1; i<=10; i++) {
+14	    int next = second_last + last;
+15	    cout << next << endl;
+16	    last = next;
+17	    second_last = last;
+18	  }
+19	
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 16990] will be killed.
+
+Quit anyway? (y or n)
