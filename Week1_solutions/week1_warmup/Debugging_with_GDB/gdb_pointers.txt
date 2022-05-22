@@ -1,0 +1,36 @@
+Reading symbols from ./a.out...
+(gdb) b main
+Breakpoint 1 at 0x11c9: file pointers.cpp, line 4.
+(gdb) r
+Starting program: /home/purvi/OS_Submissions/Week1_solutions/week1_warmup/Debugging_with_GDB/a.out 
+
+Breakpoint 1, main (argc=21845, argv=0x7ffff7dd12e8 <__exit_funcs_lock>) at pointers.cpp:4
+4	int main(int argc, char* argv[]) {
+(gdb) n
+6	  int a = 45; int b = 22;
+(gdb) n
+7	  int *p = &a;
+(gdb) p p
+$1 = (int *) 0x5555555550e0 <_start>
+(gdb) n
+8	  int *q = NULL;
+(gdb) n
+10	  cout << *p << endl;
+(gdb) p {p,q}
+$2 = {0x7fffffffdec0, 0x0}
+(gdb) n
+45
+12	  p = q;
+(gdb) p {p,q}
+$3 = {0x7fffffffdec0, 0x0}
+(gdb) n
+13	  cout << *p << endl;
+(gdb) p {p,q}
+$4 = {0x0, 0x0}
+(gdb) n
+
+Program received signal SIGSEGV, Segmentation fault.
+0x000055555555523e in main (argc=1, argv=0x7fffffffdfd8) at pointers.cpp:13
+13	  cout << *p << endl;
+(gdb) 
+Program crashes at line 13 as seen above.
