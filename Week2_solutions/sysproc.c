@@ -10,7 +10,16 @@
 int
 sys_hello(void)
 {
-  cprintf("Hi! Welcome to the world of xv6!\n");
+  cprintf("Hi! Welcome to the world of xv6!\n" );
+  return 125;
+}
+
+int
+sys_helloYou(void)
+{
+  char *name;
+  argstr(0, &name);
+  cprintf("Hi %s! \n", name);
   return 125;
 }
 
