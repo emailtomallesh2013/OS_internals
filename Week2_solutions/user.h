@@ -25,6 +25,7 @@ int sleep(int);
 int uptime(void);
 int hello(void);
 int helloYou(const char *);
+int get_siblings_info(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

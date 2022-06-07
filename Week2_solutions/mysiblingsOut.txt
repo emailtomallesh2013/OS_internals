@@ -1,0 +1,13 @@
+Booting from Hard Disk..xv6...
+cpu0: starting 0
+sb: size 1000 nblocks 941 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
+init: starting sh
+$ my_siblings 6 1 2 2 1 0 0
+4 RUNNABLE 
+5 ZOMBIE 
+6 ZOMBIE 
+7 RUNNABLE 
+8 SLEEPING 
+9 SLEEPING 
+$ QEMU: Terminated
+

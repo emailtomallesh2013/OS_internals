@@ -8,6 +8,14 @@
 #include "proc.h"
 
 int
+sys_get_siblings_info(void)
+{
+    mysiblings();
+
+    return 0;
+}
+
+int
 sys_hello(void)
 {
   cprintf("Hi! Welcome to the world of xv6!\n" );
