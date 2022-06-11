@@ -38,6 +38,17 @@ sys_helloYou(void)
 }
 
 int
+sys_signalProcess(void)
+{
+  int pid;
+  argint(0,&pid); 
+  char *name;
+  argstr(1, &name);
+  //cprintf("Hi pid:%d signal:%s! \n",pid, name);
+  return signalprocess(pid, name);
+}
+
+int
 sys_fork(void)
 {
   return fork();

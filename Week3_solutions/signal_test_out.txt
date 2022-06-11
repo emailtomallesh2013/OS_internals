@@ -1,0 +1,36 @@
+$ signal_test
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+parent: sending pause signal to child 
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+parent: sending continue signal to child 
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+child: Not_paused
+parent: sending kill signal to child 
+parent: child has terminated 
+$ 
+

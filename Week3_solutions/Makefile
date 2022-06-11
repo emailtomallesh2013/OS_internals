@@ -188,6 +188,7 @@ UPROGS=\
         _my_siblings\
         _test_ppid\
         _orphaned\
+        _signal_test\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -261,6 +262,7 @@ EXTRA=\
 	my_siblings.c\
         test_ppid.c\
         orphaned.c\
+        signal_test.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 

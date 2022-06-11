@@ -22,6 +22,14 @@ static void wakeup1(void *chan);
 char* procstate_str[]={"UNUSED", "EMBRYO", "SLEEPING", "RUNNABLE", "RUNNING", "ZOMBIE" };
 
 int
+strcmp1(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
+
+int
 myppid(void) {
   acquire(&ptable.lock);
   int parent_pid = myproc()->parent->pid;
@@ -46,6 +54,48 @@ struct proc* get_valid_ancestor()
   }
   //release(&ptable.lock);
   return parent;
+}
+
+int signalprocess(int proc_pid, char* sig)
+{
+    //Take arguments from user function using helper functions argint, argstr
+    //cprintf("debug: %d %s \n", proc_pid, sig);
+    struct proc *p;
+    
+    acquire(&ptable.lock);
+
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    
+      if(p->pid == proc_pid){
+      //Now we will have made sure that p->pid is the pid of our process only.
+
+        if(strcmp1(sig,"PAUSE")==0)
+        {
+          //Change the value of the varibale in the struct proc to some integer say 1 which will signify pausing
+          p->state =  SLEEPING;
+        }
+
+        else if(strcmp1(sig,"CONTINUE")==0)
+        {
+          //Change the value of the varibale in the struct proc to some integer say 0 which will signify continue or not paused
+          p->state =  RUNNABLE;
+        }
+
+        else if(strcmp1(sig,"KILL")==0)
+        {      
+          //Refer to kill system call
+          //Also remember to change the value of the varibale in the struct proc to some integer say 0 which will signify continue or not paused
+          p->killed = 1;
+          if(p->state == SLEEPING)
+            p->state = RUNNABLE;
+
+        }
+      }
+   }
+
+  release(&ptable.lock);
+  return 0;
+
 }
 
 int

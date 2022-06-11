@@ -24,3 +24,4 @@
 #define SYS_helloYou  23
 #define SYS_get_siblings_info 24
 #define SYS_getppid  25
+#define SYS_signalProcess  26
