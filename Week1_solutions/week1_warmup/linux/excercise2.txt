@@ -1,0 +1,145 @@
+1.  
+
+I have one processor and four cores within it.
+Each coe will be having one cpu and can run one program at a time.
+
+
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ lscpu
+Architecture:                    x86_64
+CPU op-mode(s):                  32-bit, 64-bit
+Byte Order:                      Little Endian
+Address sizes:                   39 bits physical, 48 bits virtual
+CPU(s):                          4
+On-line CPU(s) list:             0-3
+Thread(s) per core:              1
+Core(s) per socket:              4
+Socket(s):                       1
+NUMA node(s):                    1
+Vendor ID:                       GenuineIntel
+CPU family:                      6
+Model:                           158
+Model name:                      Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
+Stepping:                        10
+CPU MHz:                         2207.998
+BogoMIPS:                        4415.99
+Hypervisor vendor:               KVM
+Virtualization type:             full
+L1d cache:                       128 KiB
+L1i cache:                       128 KiB
+L2 cache:                        1 MiB
+L3 cache:                        36 MiB
+NUMA node0 CPU(s):               0-3
+Vulnerability Itlb multihit:     KVM: Mitigation: VMX unsupported
+Vulnerability L1tf:              Mitigation; PTE Inversion
+Vulnerability Mds:               Mitigation; Clear CPU buffers; SMT Host state unknown
+Vulnerability Meltdown:          Mitigation; PTI
+Vulnerability Mmio stale data:   Mitigation; Clear CPU buffers; SMT Host state unknown
+Vulnerability Spec store bypass: Vulnerable
+Vulnerability Spectre v1:        Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:        Mitigation; Retpolines, STIBP disabled, RSB filling
+Vulnerability Srbds:             Unknown: Dependent on hypervisor status
+Vulnerability Tsx async abort:   Not affected
+Flags:                           fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr 
+                                 sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid t
+                                 sc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave a
+                                 vx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid r
+                                 dseed clflushopt md_clear flush_l1d
+
+
+2. How many CPU sockets, cores, and processors does your machine have?
+   I have 1 CPU socket 4 cores and one processor.
+
+3. What is the frequency of each processor?
+   2.20GHz or 2207.998MHz
+
+4. How much memory does your machine have?
+   8142292 kB or 8 GB  ( I have allocated this to my virtual machine)  
+
+5. How much of it is free and available? What is the difference between them?
+
+MemTotal:        8142292 kB
+MemFree:         5724160 kB
+MemAvailable:    7016180 kB
+
+Free memory is the amount of memory that is currently not used for anything. It can be considered as wasted memory. 
+
+Available memory is the amount of memory that is available for allocation to new or existing processes. Available memory is then an estimation of how much memory is available for use without swapping.
+
+6. What is the total number of user-level processes in the system?
+76 as seen below. ps -u <username> lists processes in username. wc -l counts number of lines in output. (one line per process).
+
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ ps -u purvi | wc -l
+76
+
+7. What is the total number of number of forks since the boot in the system ?
+11296 as seen lbelow. vmstat -f gives total number of forks since reboot.
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ vmstat -f
+        11296 forks
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ 
+
+8. How many context switches has the system performed since bootup?
+   We need to sum up all voluntary and non voluntary context switches in /proc/<pid>/status over all pids to get final number of context switches.
+
+voluntary_ctxt_switches:        7941
+nonvoluntary_ctxt_switches:     1126
+
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ cat /proc/1/status
+Name:	systemd
+Umask:	0000
+State:	S (sleeping)
+Tgid:	1
+Ngid:	0
+Pid:	1
+PPid:	0
+TracerPid:	0
+Uid:	0	0	0	0
+Gid:	0	0	0	0
+FDSize:	256
+Groups:	 
+NStgid:	1
+NSpid:	1
+NSpgid:	1
+NSsid:	1
+VmPeak:	  233276 kB
+VmSize:	  169692 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	   11728 kB
+VmRSS:	   11728 kB
+RssAnon:	    3364 kB
+RssFile:	    8364 kB
+RssShmem:	       0 kB
+VmData:	   21548 kB
+VmStk:	     132 kB
+VmExe:	     760 kB
+VmLib:	    8960 kB
+VmPTE:	      92 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	1
+Threads:	1
+SigQ:	0/31527
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	7be3c0fe28014a03
+SigIgn:	0000000000001000
+SigCgt:	00000001800004ec
+CapInh:	0000000000000000
+CapPrm:	000001ffffffffff
+CapEff:	000001ffffffffff
+CapBnd:	000001ffffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Seccomp_filters:	0
+Speculation_Store_Bypass:	vulnerable
+SpeculationIndirectBranch:	always enabled
+Cpus_allowed:	f
+Cpus_allowed_list:	0-3
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,0000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	7941
+nonvoluntary_ctxt_switches:	1126
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ 
+

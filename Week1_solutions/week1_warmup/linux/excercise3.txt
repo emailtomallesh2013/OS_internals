@@ -1,0 +1,21 @@
+After running cpu process in one terminal and running top command in another terminal I get output as shown below.
+11410  is process id of cpu process.
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+  11410 purvi     20   0    2364    572    508 R 100.0   0.0   0:45.41 cpu                                                
+   2180 purvi     20   0 4967528 444948 147948 S   2.3   5.5   8:55.50 gnome-shell                                        
+   1993 purvi     20   0  313268 125152  68244 S   1.7   1.5   1:58.40 Xorg                                               
+   2543 purvi     20   0  814712  51616  38692 S   0.7   0.6   0:40.15 gnome-terminal-                                    
+  11413 purvi     20   0   11992   3976   3200 R   0.3   0.0   0:00.04 top              
+
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ ps -aux | grep "cpu"
+root           9  0.0  0.0      0     0 ?        I<   Jun19   0:00 [mm_percpu_wq]
+root          16  0.0  0.0      0     0 ?        S    Jun19   0:00 [cpuhp/0]
+root          17  0.0  0.0      0     0 ?        S    Jun19   0:00 [cpuhp/1]
+root          23  0.0  0.0      0     0 ?        S    Jun19   0:00 [cpuhp/2]
+root          29  0.0  0.0      0     0 ?        S    Jun19   0:00 [cpuhp/3]
+purvi      11410  100  0.0   2364   572 pts/0    R+   02:36   8:40 ./cpu
+purvi      11487  0.0  0.0   9040   712 pts/1    S+   02:44   0:00 grep --color=auto cpu
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ 
+
+The above outout shows that process is in running in for ground state.

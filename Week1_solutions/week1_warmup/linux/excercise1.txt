@@ -1,0 +1,20 @@
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ ls -a
+.  ..  a.out  cpu.c  README.md
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ mv a.out a.out1
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ ls
+a.out1  cpu.c  README.md
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ cp -r ../
+cpp_makefiles/      Git_and_Github/     README.md           xv6_Installation/   
+Debugging_with_GDB/ linux/              shell_scripting/    
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ cp -r ../
+cpp_makefiles/      Git_and_Github/     README.md           xv6_Installation/   
+Debugging_with_GDB/ linux/              shell_scripting/    
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ cp -r ../Debugging_with_GDB/ .
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ ls
+a.out1  cpu.c  Debugging_with_GDB  README.md
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ 
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ rm -rf Debugging_with_GDB/
+purvi@purvi-VirtualBox:~/OS_Submissions/Week1_solutions/week1_warmup/linux$ ls
+a.out1  cpu.c  excercise1.txt  README.md
+
+
