@@ -799,3 +799,18 @@ $7 = {sz = 12288, pgdir = 0x8deeb000, kstack = 0x8dff6000 "", state = RUNNING,
 (gdb) 
 
 
+FINAL ANSWERS:
+1. List the different functions which are encountered after int ret = fork() is run until fork function in proc.c is called.
+   alltraps in trapasm.S
+   trap in trap.c
+   syscall() in syscall.c
+   fork() in proc.c
+   
+2. While in the function trap in trap.c, print the trap number for T_SYSCALL.
+   64
+3. While in the function syscall in syscall.c, print the system call number.
+   1
+4. While in the fork function (in proc.c), after the new process is created, print the name, pid, state of the new program and that of its parent.
+   new process --( debug, 8, EMBRYO)
+   parent process --( debug, 7, RUNNING)
+
