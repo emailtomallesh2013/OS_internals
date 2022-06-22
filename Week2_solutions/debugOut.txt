@@ -1,0 +1,801 @@
+purvi@purvi-VirtualBox:~/Test/xv6-public$ gdb kernel
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from kernel...
+warning: File "/home/purvi/Test/xv6-public/.gdbinit" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+	add-auto-load-safe-path /home/purvi/Test/xv6-public/.gdbinit
+line to your configuration file "/home/purvi/.gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/purvi/.gdbinit".
+For more information about this security protection see the
+--Type <RET> for more, q to quit, c to continue without paging--
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+(gdb) target remote :26000
+Remote debugging using :26000
+0x0000fff0 in ?? ()
+(gdb) symbol-file _debug
+Load new symbol table from "_debug"? (y or n) y
+Reading symbols from _debug...
+(gdb) b main
+Breakpoint 1 at 0x0: file debug.c, line 4.
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (
+    argc=<error reading variable: Cannot access memory at address 0x1004>, 
+    argv=<error reading variable: Cannot access memory at address 0x1008>)
+    at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x2ff0) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=5696, argv=0x64 <strcpy+24>) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) n
+0x00000cf9 in ?? ()
+(gdb) l
+1	#include "types.h"
+2	#include "user.h"
+3	
+4	int main(int argc, char *argv[]){
+5	    
+6	    int ret = fork();
+7	    if(ret == 0) {
+8	      printf(1, "In child\n");
+9	      exit();
+10	    }else{
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x2ff0) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) l
+1	#include "types.h"
+2	#include "user.h"
+3	
+4	int main(int argc, char *argv[]){
+5	    
+6	    int ret = fork();
+7	    if(ret == 0) {
+8	      printf(1, "In child\n");
+9	      exit();
+10	    }else{
+(gdb) n
+6	    int ret = fork();
+(gdb) s
+fork () at usys.S:11
+11	SYSCALL(fork)
+(gdb) symbol-file kernel
+Load new symbol table from "kernel"? (y or n) y
+Reading symbols from kernel...
+(gdb) b trap.c:7
+Breakpoint 2 at 0x80104e62: file trap.c, line 19.
+(gdb) b trap.c:8
+Note: breakpoint 2 also set at pc 0x80104e62.
+Breakpoint 3 at 0x80104e62: file trap.c, line 19.
+(gdb) b trap
+Breakpoint 4 at 0x80104f3f: file trap.c, line 38.
+(gdb) b trap.c:39
+Breakpoint 5 at 0x80104f4f: file trap.c, line 39.
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8dfbefb4) at trap.c:38
+38	{
+(gdb) p tf
+$1 = (struct trapframe *) 0x8dfbefb4
+(gdb) p *tf
+$2 = {edi = 0, esi = 0, ebp = 12248, oesp = 2382098388, ebx = 49064, 
+  edx = 49068, ecx = 12264, eax = 0, gs = 0, padding1 = 0, fs = 0, 
+  padding2 = 0, es = 35, padding3 = 0, ds = 35, padding4 = 0, trapno = 32, 
+  err = 0, eip = 513, cs = 27, padding5 = 0, eflags = 514, esp = 12236, 
+  ss = 35, padding6 = 0}
+(gdb) n
+
+Breakpoint 5, trap (tf=0x8dfbefb4) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) n
+49	  switch(tf->trapno){
+(gdb) n
+51	    if(cpuid() == 0){
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8dfbefb4) at trap.c:38
+38	{
+(gdb) p *tf
+$3 = {edi = 0, esi = 0, ebp = 12248, oesp = 2382098388, ebx = 49064, 
+  edx = 49068, ecx = 12264, eax = 1, gs = 0, padding1 = 0, fs = 0, 
+  padding2 = 0, es = 35, padding3 = 0, ds = 35, padding4 = 0, trapno = 64, 
+  err = 0, eip = 520, cs = 27, padding5 = 0, eflags = 514, esp = 12236, 
+  ss = 35, padding6 = 0}
+(gdb) n
+
+Breakpoint 5, trap (tf=0x8dfbefb4) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) p tf->trapno
+$4 = 64
+(gdb) p T_SYSCALL
+No symbol "T_SYSCALL" in current context.
+(gdb) b syscall
+Breakpoint 6 at 0x801040b4: file syscall.c, line 133.
+(gdb) b syscall.c:137
+Breakpoint 7 at 0x801040c6: file syscall.c, line 137.
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8dfbef3c) at trap.c:38
+38	{
+(gdb) n
+
+Breakpoint 5, trap (tf=0x8dfbef3c) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) 
+49	  switch(tf->trapno){
+(gdb) 
+51	    if(cpuid() == 0){
+(gdb) 
+52	      acquire(&tickslock);
+(gdb) 
+acquire (lk=0x80113c60 <tickslock>) at spinlock.c:26
+26	{
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8010a520 <stack+3936>) at trap.c:38
+38	{
+(gdb) c
+Continuing.
+
+Breakpoint 5, trap (tf=0x8010a520 <stack+3936>) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) c
+Continuing.
+
+Breakpoint 6, syscall () at syscall.c:133
+133	{
+(gdb) n
+syscall () at syscall.c:135
+135	  struct proc *curproc = myproc();
+(gdb) 
+
+Breakpoint 4, trap (tf=0x8dfbef28) at trap.c:38
+38	{
+(gdb) c
+Continuing.
+
+Breakpoint 5, trap (tf=0x8dfbef28) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) 
+Continuing.
+
+Breakpoint 7, syscall () at syscall.c:137
+137	  num = curproc->tf->eax;
+(gdb) p curproc->tf->eax
+$5 = 1
+(gdb) n
+138	  if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+(gdb) p num
+$6 = 1
+(gdb) 
+
+purvi@purvi-VirtualBox:~/Test/xv6-public$ gdb kernel
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from kernel...
+warning: File "/home/purvi/Test/xv6-public/.gdbinit" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+	add-auto-load-safe-path /home/purvi/Test/xv6-public/.gdbinit
+line to your configuration file "/home/purvi/.gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/purvi/.gdbinit".
+For more information about this security protection see the
+--Type <RET> for more, q to quit, c to continue without paging--
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+(gdb) target remote :26000
+Remote debugging using :26000
+0x0000fff0 in ?? ()
+(gdb) symbol-file _debug
+Load new symbol table from "_debug"? (y or n) y
+Reading symbols from _debug...
+(gdb) b main
+Breakpoint 1 at 0x0: file debug.c, line 4.
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (
+    argc=<error reading variable: Cannot access memory at address 0x1004>, 
+    argv=<error reading variable: Cannot access memory at address 0x1008>)
+    at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) n
+0x801054c2 in ?? ()
+(gdb) n
+Cannot find bounds of current function
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x2ff0) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=5696, argv=0x64 <strcpy+24>) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x2ff0) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) n
+6	    int ret = fork();
+(gdb) s
+fork () at usys.S:11
+11	SYSCALL(fork)
+(gdb) l
+6	  name: \
+7	    movl $SYS_ ## name, %eax; \
+8	    int $T_SYSCALL; \
+9	    ret
+10	
+11	SYSCALL(fork)
+12	SYSCALL(exit)
+13	SYSCALL(wait)
+14	SYSCALL(pipe)
+15	SYSCALL(read)
+(gdb) si
+0x00000206	11	SYSCALL(fork)
+(gdb) si
+0x801054c2 in ?? ()
+(gdb) symbol-file _kernel
+_kernel: No such file or directory.
+(gdb) symbol-file kernel
+Load new symbol table from "kernel"? (y or n) y
+Reading symbols from kernel...
+(gdb) si
+vector64 () at vectors.S:321
+321	  jmp alltraps
+(gdb) l
+316	  jmp alltraps
+317	.globl vector64
+318	vector64:
+319	  pushl $0
+320	  pushl $64
+321	  jmp alltraps
+322	.globl vector65
+323	vector65:
+324	  pushl $0
+325	  pushl $65
+(gdb) p T_SYSCALL
+No symbol "T_SYSCALL" in current context.
+(gdb) si
+alltraps () at trapasm.S:7
+7	  pushl %ds
+(gdb) ni
+alltraps () at trapasm.S:8
+8	  pushl %es
+(gdb) 
+alltraps () at trapasm.S:9
+9	  pushl %fs
+(gdb) 
+alltraps () at trapasm.S:10
+10	  pushl %gs
+(gdb) 
+alltraps () at trapasm.S:11
+11	  pushal
+(gdb) 
+alltraps () at trapasm.S:14
+14	  movw $(SEG_KDATA<<3), %ax
+(gdb) 
+15	  movw %ax, %ds
+(gdb) 
+16	  movw %ax, %es
+(gdb) 
+19	  pushl %esp
+(gdb) 
+alltraps () at trapasm.S:20
+20	  call trap
+(gdb) 
+21	  addl $4, %esp
+(gdb) 
+trapret () at trapasm.S:26
+26	  popal
+(gdb) 
+trapret () at trapasm.S:27
+27	  popl %gs
+(gdb) 
+trapret () at trapasm.S:28
+28	  popl %fs
+(gdb) 
+trapret () at trapasm.S:29
+29	  popl %es
+(gdb) 
+trapret () at trapasm.S:30
+30	  popl %ds
+(gdb) 
+trapret () at trapasm.S:31
+31	  addl $0x8, %esp  # trapno and errcode
+(gdb) 
+trapret () at trapasm.S:32
+32	  iret
+(gdb) 
+0x00000208 in ?? ()
+(gdb) 
+0x0000001a in ?? ()
+(gdb) n
+Cannot find bounds of current function
+(gdb) c
+Continuing.
+^C
+Program received signal SIGINT, Interrupt.
+mycpu () at proc.c:48
+48	  for (i = 0; i < ncpu; ++i) {
+(gdb) r
+The "remote" target does not support "run".  Try "help target" or "continue".
+(gdb) c
+Continuing.
+Remote connection closed
+(gdb) quit
+purvi@purvi-VirtualBox:~/Test/xv6-public$ gdb kernel
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from kernel...
+warning: File "/home/purvi/Test/xv6-public/.gdbinit" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+	add-auto-load-safe-path /home/purvi/Test/xv6-public/.gdbinit
+line to your configuration file "/home/purvi/.gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/purvi/.gdbinit".
+For more information about this security protection see the
+--Type <RET> for more, q to quit, c to continue without paging--
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+(gdb) target remote :26000
+Remote debugging using :26000
+0x0000fff0 in ?? ()
+(gdb) symbol-file _debug
+Load new symbol table from "_debug"? (y or n) y
+Reading symbols from _debug...
+(gdb) b main
+Breakpoint 1 at 0x0: file debug.c, line 4.
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (
+    argc=<error reading variable: Cannot access memory at address 0x1004>, 
+    argv=<error reading variable: Cannot access memory at address 0x1008>)
+    at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x2ff0) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=5696, argv=0x64 <strcpy+24>) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) n
+0x00000cf9 in ?? ()
+(gdb) l
+1	#include "types.h"
+2	#include "user.h"
+3	
+4	int main(int argc, char *argv[]){
+5	    
+6	    int ret = fork();
+7	    if(ret == 0) {
+8	      printf(1, "In child\n");
+9	      exit();
+10	    }else{
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x2ff0) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) l
+1	#include "types.h"
+2	#include "user.h"
+3	
+4	int main(int argc, char *argv[]){
+5	    
+6	    int ret = fork();
+7	    if(ret == 0) {
+8	      printf(1, "In child\n");
+9	      exit();
+10	    }else{
+(gdb) n
+6	    int ret = fork();
+(gdb) s
+fork () at usys.S:11
+11	SYSCALL(fork)
+(gdb) symbol-file kernel
+Load new symbol table from "kernel"? (y or n) y
+Reading symbols from kernel...
+(gdb) b trap.c:7
+Breakpoint 2 at 0x80104e62: file trap.c, line 19.
+(gdb) b trap.c:8
+Note: breakpoint 2 also set at pc 0x80104e62.
+Breakpoint 3 at 0x80104e62: file trap.c, line 19.
+(gdb) b trap
+Breakpoint 4 at 0x80104f3f: file trap.c, line 38.
+(gdb) b trap.c:39
+Breakpoint 5 at 0x80104f4f: file trap.c, line 39.
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8dfbefb4) at trap.c:38
+38	{
+(gdb) p tf
+$1 = (struct trapframe *) 0x8dfbefb4
+(gdb) p *tf
+$2 = {edi = 0, esi = 0, ebp = 12248, oesp = 2382098388, ebx = 49064, 
+  edx = 49068, ecx = 12264, eax = 0, gs = 0, padding1 = 0, fs = 0, 
+  padding2 = 0, es = 35, padding3 = 0, ds = 35, padding4 = 0, trapno = 32, 
+  err = 0, eip = 513, cs = 27, padding5 = 0, eflags = 514, esp = 12236, 
+  ss = 35, padding6 = 0}
+(gdb) n
+
+Breakpoint 5, trap (tf=0x8dfbefb4) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) n
+49	  switch(tf->trapno){
+(gdb) n
+51	    if(cpuid() == 0){
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8dfbefb4) at trap.c:38
+38	{
+(gdb) p *tf
+$3 = {edi = 0, esi = 0, ebp = 12248, oesp = 2382098388, ebx = 49064, 
+  edx = 49068, ecx = 12264, eax = 1, gs = 0, padding1 = 0, fs = 0, 
+  padding2 = 0, es = 35, padding3 = 0, ds = 35, padding4 = 0, trapno = 64, 
+  err = 0, eip = 520, cs = 27, padding5 = 0, eflags = 514, esp = 12236, 
+  ss = 35, padding6 = 0}
+(gdb) n
+
+Breakpoint 5, trap (tf=0x8dfbefb4) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) p tf->trapno
+$4 = 64
+(gdb) p T_SYSCALL
+No symbol "T_SYSCALL" in current context.
+(gdb) b syscall
+Breakpoint 6 at 0x801040b4: file syscall.c, line 133.
+(gdb) b syscall.c:137
+Breakpoint 7 at 0x801040c6: file syscall.c, line 137.
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8dfbef3c) at trap.c:38
+38	{
+(gdb) n
+
+Breakpoint 5, trap (tf=0x8dfbef3c) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) 
+49	  switch(tf->trapno){
+(gdb) 
+51	    if(cpuid() == 0){
+(gdb) 
+52	      acquire(&tickslock);
+(gdb) 
+acquire (lk=0x80113c60 <tickslock>) at spinlock.c:26
+26	{
+(gdb) c
+Continuing.
+
+Breakpoint 4, trap (tf=0x8010a520 <stack+3936>) at trap.c:38
+38	{
+(gdb) c
+Continuing.
+
+Breakpoint 5, trap (tf=0x8010a520 <stack+3936>) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) c
+Continuing.
+
+Breakpoint 6, syscall () at syscall.c:133
+133	{
+(gdb) n
+syscall () at syscall.c:135
+135	  struct proc *curproc = myproc();
+(gdb) 
+
+Breakpoint 4, trap (tf=0x8dfbef28) at trap.c:38
+38	{
+(gdb) c
+Continuing.
+
+Breakpoint 5, trap (tf=0x8dfbef28) at trap.c:39
+39	  if(tf->trapno == T_SYSCALL){
+(gdb) 
+Continuing.
+
+Breakpoint 7, syscall () at syscall.c:137
+137	  num = curproc->tf->eax;
+(gdb) p curproc->tf->eax
+$5 = 1
+(gdb) n
+138	  if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+(gdb) p num
+$6 = 1
+(gdb) info breakpoints
+Num     Type           Disp Enb Address    What
+1       breakpoint     keep y   0x80102b15 in main at main.c:19
+	breakpoint already hit 4 times
+2       breakpoint     keep y   0x80104e62 in tvinit at trap.c:19
+3       breakpoint     keep y   0x80104e62 in tvinit at trap.c:19
+4       breakpoint     keep y   0x80104f3f in trap at trap.c:38
+	breakpoint already hit 5 times
+5       breakpoint     keep y   0x80104f4f in trap at trap.c:39
+	breakpoint already hit 5 times
+6       breakpoint     keep y   0x801040b4 in syscall at syscall.c:133
+	breakpoint already hit 1 time
+7       breakpoint     keep y   0x801040c6 in syscall at syscall.c:137
+	breakpoint already hit 1 time
+(gdb) delete
+Delete all breakpoints? (y or n) y
+(gdb) b fork
+Breakpoint 8 at 0x80103448: file proc.c, line 182.
+(gdb) c
+Continuing.
+
+Breakpoint 8, fork () at proc.c:182
+182	{
+(gdb) n
+fork () at proc.c:185
+185	  struct proc *curproc = myproc();
+(gdb) n
+188	  if((np = allocproc()) == 0){
+(gdb) 
+193	  if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
+(gdb) 
+copyuvm (pgdir=0x8df23000, sz=12288) at vm.c:317
+317	{
+(gdb) n
+copyuvm (pgdir=0x8df23000, sz=12288) at vm.c:323
+323	  if((d = setupkvm()) == 0)
+(gdb) finish
+Run till exit from #0  copyuvm (pgdir=0x8df23000, sz=12288) at vm.c:323
+^C
+Program received signal SIGINT, Interrupt.
+mycpu () at proc.c:48
+48	  for (i = 0; i < ncpu; ++i) {
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 1] will be detached.
+
+Quit anyway? (y or n) y
+Detaching from program: /home/purvi/Test/xv6-public/kernel, process 1
+Ending remote debugging.
+[Inferior 1 (process 1) detached]
+purvi@purvi-VirtualBox:~/Test/xv6-public$ gdb kernel
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from kernel...
+warning: File "/home/purvi/Test/xv6-public/.gdbinit" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+	add-auto-load-safe-path /home/purvi/Test/xv6-public/.gdbinit
+line to your configuration file "/home/purvi/.gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/purvi/.gdbinit".
+For more information about this security protection see the
+--Type <RET> for more, q to quit, c to continue without paging--
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+(gdb) gdb kernel
+Undefined command: "gdb".  Try "help".
+(gdb) target remote :26000
+Remote debugging using :26000
+mycpu () at proc.c:48
+48	  for (i = 0; i < ncpu; ++i) {
+(gdb) info breakpoints
+No breakpoints or watchpoints.
+(gdb) symbol-file _debug
+Load new symbol table from "_debug"? (y or n) y
+Reading symbols from _debug...
+(gdb) b main
+Breakpoint 1 at 0x0: file debug.c, line 4.
+(gdb) c
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x2ff0) at debug.c:4
+4	int main(int argc, char *argv[]){
+(gdb) n
+6	    int ret = fork();
+(gdb) s
+fork () at usys.S:11
+11	SYSCALL(fork)
+(gdb) symbol-file kernel
+Load new symbol table from "kernel"? (y or n) y
+Reading symbols from kernel...
+(gdb) b fork
+Breakpoint 2 at 0x80103448: file proc.c, line 182.
+(gdb) b trap.c:40
+Breakpoint 3 at 0x80104f6b: file trap.c, line 40.
+(gdb) c
+Continuing.
+
+Breakpoint 3, trap (tf=0x8dff6fb4) at trap.c:40
+40	    if(myproc()->killed)
+(gdb) p tf->trapno
+$1 = 64
+(gdb) c
+Continuing.
+
+Breakpoint 2, fork () at proc.c:182
+182	{
+(gdb) n
+fork () at proc.c:185
+185	  struct proc *curproc = myproc();
+(gdb) b proc.c:199
+Breakpoint 4 at 0x80103485: file proc.c, line 199.
+(gdb) n
+188	  if((np = allocproc()) == 0){
+(gdb) n
+193	  if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
+(gdb) n
+copyuvm (pgdir=0x8deeb000, sz=12288) at vm.c:317
+317	{
+(gdb) n
+copyuvm (pgdir=0x8deeb000, sz=12288) at vm.c:323
+323	  if((d = setupkvm()) == 0)
+(gdb) 
+325	  for(i = 0; i < sz; i += PGSIZE){
+(gdb) 
+326	    if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
+(gdb) 
+328	    if(!(*pte & PTE_P))
+(gdb) 
+330	    pa = PTE_ADDR(*pte);
+(gdb) 
+331	    flags = PTE_FLAGS(*pte);
+(gdb) 
+332	    if((mem = kalloc()) == 0)
+(gdb) 
+334	    memmove(mem, (char*)P2V(pa), PGSIZE);
+(gdb) 
+memmove (dst=0x8deea000, src=0x8df76000, n=4096) at string.c:33
+33	{
+(gdb) 
+memmove (dst=0x8deea000, src=0x8df76000, n=4096) at string.c:39
+39	  if(s < d && s + n > d){
+(gdb) 
+45	    while(n-- > 0)
+(gdb) 
+46	      *d++ = *s++;
+(gdb) 
+45	    while(n-- > 0)
+(gdb) 
+46	      *d++ = *s++;
+(gdb) 
+45	    while(n-- > 0)
+(gdb) 
+46	      *d++ = *s++;
+(gdb) 
+45	    while(n-- > 0)
+(gdb) 
+46	      *d++ = *s++;
+(gdb) 
+45	    while(n-- > 0)
+(gdb) 
+46	      *d++ = *s++;
+(gdb) c
+Continuing.
+
+Breakpoint 4, fork () at proc.c:199
+199	  np->sz = curproc->sz;
+(gdb) l
+194	    kfree(np->kstack);
+195	    np->kstack = 0;
+196	    np->state = UNUSED;
+197	    return -1;
+198	  }
+199	  np->sz = curproc->sz;
+200	  np->parent = curproc;
+201	  *np->tf = *curproc->tf;
+202	
+203	  // Clear %eax so that fork returns 0 in the child.
+(gdb) p np->pid
+$2 = 8
+(gdb) p np->state
+$3 = EMBRYO
+(gdb) p np->name
+$4 = "\000ebug\000\000\000\000\000\000\000\000\000\000"
+(gdb) p *np
+$5 = {sz = 12288, pgdir = 0x8df2d000, kstack = 0x8df2b000 "", state = EMBRYO, 
+  pid = 8, parent = 0x0, tf = 0x8df2bfb4, context = 0x8df2bf9c, chan = 0x0, 
+  killed = 0, ofile = {0x0 <repeats 16 times>}, cwd = 0x0, 
+  name = "\000ebug\000\000\000\000\000\000\000\000\000\000"}
+(gdb) b proc.c:213
+Breakpoint 5 at 0x8010351d: file proc.c, line 213.
+(gdb) c
+Continuing.
+
+Breakpoint 5, fork () at proc.c:213
+213	  pid = np->pid;
+(gdb) p *np
+$6 = {sz = 12288, pgdir = 0x8df2d000, kstack = 0x8df2b000 "", state = EMBRYO, 
+  pid = 8, parent = 0x80111e4c <ptable+300>, tf = 0x8df2bfb4, 
+  context = 0x8df2bf9c, chan = 0x0, killed = 0, ofile = {
+    0x8010eff4 <ftable+52>, 0x8010eff4 <ftable+52>, 0x8010eff4 <ftable+52>, 
+    0x0 <repeats 13 times>}, cwd = 0x8010fa14 <icache+52>, 
+  name = "debug\000\000\000\000\000\000\000\000\000\000"}
+(gdb) p *curproc
+$7 = {sz = 12288, pgdir = 0x8deeb000, kstack = 0x8dff6000 "", state = RUNNING, 
+  pid = 7, parent = 0x80111dd0 <ptable+176>, tf = 0x8dff6fb4, 
+  context = 0x8dff6e04, chan = 0x0, killed = 0, ofile = {
+    0x8010eff4 <ftable+52>, 0x8010eff4 <ftable+52>, 0x8010eff4 <ftable+52>, 
+    0x0 <repeats 13 times>}, cwd = 0x8010fa14 <icache+52>, 
+  name = "debug\000\000\000\000\000\000\000\000\000\000"}
+(gdb) 
+
+
